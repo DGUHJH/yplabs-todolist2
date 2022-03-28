@@ -1,4 +1,4 @@
-import { hAxios } from './method';
+import {hAxios} from './method';
 
 export type GetTodoListResponseType = {
   data: {
@@ -18,7 +18,7 @@ type DeleteTodoItemRequestType = {
 type DeleteTodoItemResponseType = any;
 
 export const deleteTodoItem = async (data: DeleteTodoItemRequestType) => {
-  return hAxios(`todo/${data.id}`, 'delete');
+  return hAxios(`todo/${data.id}/`, 'delete');
 };
 
 type CreateTodoItemRequestType = {
