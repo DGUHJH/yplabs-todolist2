@@ -17,9 +17,17 @@ const AddModal: React.FC<Props> = ({onCreateTodoItem, onClose}) => {
   return (
     <View style={styles.root}>
       <View style={styles.modalRoot}>
-        <TextInput value={value} onChangeText={setValue} />
-        <Text onPress={onAddButtonPress}>추가</Text>
-        <Text onPress={onClose}>끄기</Text>
+        <TextInput
+          style={styles.textInput}
+          value={value}
+          onChangeText={setValue}
+        />
+        <Text style={styles.text} onPress={onAddButtonPress}>
+          추가
+        </Text>
+        <Text style={styles.text} onPress={onClose}>
+          끄기
+        </Text>
       </View>
     </View>
   );
