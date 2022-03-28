@@ -5,6 +5,10 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
   },
+  todoListContainer: {
+    width: '100%',
+    flex: 1,
+  },
 });
 
 export default styles;

@@ -24,6 +24,10 @@ const Todo: React.FC<Props> = ({
 
   const contentLineList = content.split('\n');
 
+  // modal 컴포넌트 하나로 통일, react-native-modal library 자체적인 모듈 사용
+  // modal 자체는 home 페이지에서 불러온다.
+  // scrollview 안에 있는 컴포넌트 map 돌려서 사용 하지 않고 flatList 사용
+
   return (
     <View style={styles.root}>
       <CheckBox value={checked} onChange={() => setChecked(prev => !prev)} />

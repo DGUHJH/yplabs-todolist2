@@ -3,8 +3,10 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   root: {
     width: '100%',
-    height: 105,
-    flex: 1,
+    // height: 105,
+    // flex: 1,
+
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -14,7 +16,7 @@ const styles = StyleSheet.create({
   modalRoot: {
     width: '80%',
     backgroundColor: '#fff',
-    flex: 0,
+    // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,

@@ -38,7 +38,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.root}>
-      <ScrollView style={styles.root}>
+      <ScrollView style={styles.todoListContainer}>
         {store.todoList.map(todoItem => (
           <Todo
             id={todoItem.id}
