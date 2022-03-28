@@ -26,6 +26,7 @@ const EditModal: React.FC<Props> = ({
           style={styles.textInput}
           value={value}
           onChangeText={setValue}
+          multiline={true}
         />
         <Text style={styles.text} onPress={onUpdateButtonPress}>
           수정

@@ -21,6 +21,7 @@ const AddModal: React.FC<Props> = ({onCreateTodoItem, onClose}) => {
           style={styles.textInput}
           value={value}
           onChangeText={setValue}
+          multiline={true}
         />
         <Text style={styles.text} onPress={onAddButtonPress}>
           추가
