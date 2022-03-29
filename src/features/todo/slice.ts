@@ -26,24 +26,26 @@ const initialState: TodoSliceState = {
   },
 };
 
-type DeleteTodoItemLoadProps = {
-  payload: {
-    id: number;
-  };
+type ActionPropsType<T> = {
+  payload: T;
 };
 
-type CreateTodoItemLoadProps = {
-  payload: {
-    content: string;
-  };
-};
+type DeleteTodoItemLoadProps = ActionPropsType<{
+  id: number;
+}>;
 
-type UpdateTodoItemLoadProps = {
-  payload: {
-    id: number;
-    content: string;
-  };
-};
+type ToggleTodoItemLoadProps = ActionPropsType<{
+  id: number;
+}>;
+
+type CreateTodoItemLoadProps = ActionPropsType<{
+  content: string;
+}>;
+
+type UpdateTodoItemLoadProps = ActionPropsType<{
+  id: number;
+  content: string;
+}>;
 
 type ToggleModalProps = {
   payload: {
@@ -77,6 +79,16 @@ export const todoSlice = createSlice({
       state.isLoading = false;
     },
     deleteTodoItemFail: state => {
+      state.isLoading = false;
+      state.error = true;
+    },
+    toggleTodoItemLoad: (state, action: ToggleTodoItemLoadProps) => {
+      state.isLoading = true;
+    },
+    toggleTodoItemSuccess: state => {
+      state.isLoading = false;
+    },
+    toggleTodoItemFail: state => {
       state.isLoading = false;
       state.error = true;
     },

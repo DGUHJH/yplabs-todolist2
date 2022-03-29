@@ -7,17 +7,11 @@ import styles from './styles';
 
 type Props = {
   id: number;
-  onDeleteButtonClick?: () => void;
   onDetailsButtonClick?: () => void;
   content?: string;
 };
 
-const Todo: React.FC<Props> = ({
-  id,
-  onDeleteButtonClick,
-  onDetailsButtonClick,
-  content,
-}) => {
+const Todo: React.FC<Props> = ({id, onDetailsButtonClick, content}) => {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState<boolean>(false);
   const contentLineList = content.split('\n');
@@ -32,7 +26,9 @@ const Todo: React.FC<Props> = ({
     );
   };
 
-  // scrollview 안에 있는 컴포넌트 map 돌려서 사용 하지 않고 flatList 사용
+  const onDeleteButtonClick = () => {
+    dispatch(todoAction.deleteTodoItemLoad({id}));
+  };
 
   return (
     <View style={styles.root}>

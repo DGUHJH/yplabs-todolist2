@@ -22,11 +22,6 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   const refreshTodoList = () => {
     dispatch(todoAction.refreshTodoListLoad());
   };
-
-  const onDeleteButtonClick = (id: number) => () => {
-    dispatch(todoAction.deleteTodoItemLoad({id}));
-  };
-
   const onAddButtonClick = () => {
     dispatch(todoAction.toggleModal({type: 'create', open: true}));
   };
@@ -40,7 +35,6 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
             <Todo
               id={item.id}
               content={item.content}
-              onDeleteButtonClick={onDeleteButtonClick(item.id)}
               onDetailsButtonClick={() =>
                 navigation.push('Details', {id: item.id})
               }
