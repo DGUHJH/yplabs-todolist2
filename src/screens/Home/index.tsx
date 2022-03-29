@@ -1,9 +1,9 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {ScrollView, Text} from 'react-native';
+import {FlatList, ScrollView, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
-import AddModal from '../../components/Modal/Add';
+import CommonModal from '../../components/Modal';
 import Todo from '../../components/Todo';
 import {RootState} from '../../features';
 import {todoAction} from '../../features/todo/slice';
@@ -14,7 +14,6 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 const HomeScreen: React.FC<Props> = ({navigation}) => {
   const store = useSelector((state: RootState) => state);
   const dispatch = useDispatch();
-  const [addMode, setAddMode] = useState<boolean>(false);
 
   useEffect(() => {
     refreshTodoList();
@@ -28,37 +27,30 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     dispatch(todoAction.deleteTodoItemLoad({id}));
   };
 
-  const onUpdateTodoItem = (id: number) => (content: string) => {
-    dispatch(todoAction.updateTodoItemLoad({id, content}));
-  };
-
-  const onCreateTodoItem = (content: string) => () => {
-    dispatch(todoAction.createTodoItemLoad({content}));
+  const onAddButtonClick = () => {
+    dispatch(todoAction.toggleModal({type: 'create', open: true}));
   };
 
   return (
     <SafeAreaView style={styles.root}>
       <ScrollView style={styles.todoListContainer}>
-        {store.todoList.map(todoItem => (
-          <Todo
-            id={todoItem.id}
-            content={todoItem.content}
-            onDeleteButtonClick={onDeleteButtonClick(todoItem.id)}
-            onUpdateTodoItem={onUpdateTodoItem(todoItem.id)}
-            onDetailsButtonClick={() =>
-              navigation.push('Details', {id: todoItem.id})
-            }
-            key={`todo_item_${todoItem.id}`}
-          />
-        ))}
-        <Text onPress={() => setAddMode(prev => !prev)}>추가</Text>
-      </ScrollView>
-      {addMode && (
-        <AddModal
-          onClose={() => setAddMode(false)}
-          onCreateTodoItem={onCreateTodoItem}
+        <FlatList
+          data={store.todoList}
+          renderItem={({item}) => (
+            <Todo
+              id={item.id}
+              content={item.content}
+              onDeleteButtonClick={onDeleteButtonClick(item.id)}
+              onDetailsButtonClick={() =>
+                navigation.push('Details', {id: item.id})
+              }
+              key={`todo_item_${item.id}`}
+            />
+          )}
         />
-      )}
+        <Text onPress={onAddButtonClick}>추가</Text>
+      </ScrollView>
+      <CommonModal />
     </SafeAreaView>
   );
 };
