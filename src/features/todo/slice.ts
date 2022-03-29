@@ -9,12 +9,21 @@ export type TodoSliceState = {
   isLoading: boolean;
   todoList: TodoType[];
   error: boolean;
+  modal: {
+    id?: number;
+    type?: 'create' | 'update';
+    initialValue?: string;
+    open: boolean;
+  };
 };
 
 const initialState: TodoSliceState = {
   isLoading: false,
   todoList: [],
   error: false,
+  modal: {
+    open: false,
+  },
 };
 
 type DeleteTodoItemLoadProps = {
@@ -33,6 +42,15 @@ type UpdateTodoItemLoadProps = {
   payload: {
     id: number;
     content: string;
+  };
+};
+
+type ToggleModalProps = {
+  payload: {
+    id?: number;
+    type?: 'create' | 'update';
+    initialValue?: string;
+    open: boolean;
   };
 };
 
@@ -81,6 +99,12 @@ export const todoSlice = createSlice({
     updateTodoItemFail: state => {
       state.isLoading = false;
       state.error = true;
+    },
+    toggleModal: (state, action: ToggleModalProps) => {
+      state.modal.open = action.payload.open;
+      state.modal.type = action.payload.type;
+      state.modal.id = action.payload.id;
+      state.modal.initialValue = action.payload.initialValue;
     },
   },
   extraReducers: {},
