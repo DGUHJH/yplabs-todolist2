@@ -1,10 +1,11 @@
-import { all } from '@redux-saga/core/effects';
-import { configureStore } from '@reduxjs/toolkit';
+import {all} from '@redux-saga/core/effects';
+import {configureStore} from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 import {
   watchCreateTodoList,
   watchDeleteTodoList,
   watchGetTodoList,
+  watchToggleTodoList,
   watchUpdateTodoList,
 } from './todo/saga';
 import todoSlice from './todo/slice';
@@ -16,6 +17,7 @@ function* rootSaga() {
     watchDeleteTodoList(),
     watchCreateTodoList(),
     watchUpdateTodoList(),
+    watchToggleTodoList(),
   ]);
 }
 

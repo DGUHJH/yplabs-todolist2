@@ -13,8 +13,10 @@ type Props = {
 
 const Todo: React.FC<Props> = ({id, onDetailsButtonClick, content}) => {
   const dispatch = useDispatch();
-  const [checked, setChecked] = useState<boolean>(false);
-  const contentLineList = content.split('\n');
+  const checked = content.indexOf(' wogud') !== -1;
+  const filterContent = checked ? content.replace(' wogud', '') : content;
+
+  const contentLineList = filterContent.split('\n');
   const onEditButtonClick = () => {
     dispatch(
       todoAction.toggleModal({
@@ -30,9 +32,13 @@ const Todo: React.FC<Props> = ({id, onDetailsButtonClick, content}) => {
     dispatch(todoAction.deleteTodoItemLoad({id}));
   };
 
+  const onToggleButtonClick = () => {
+    dispatch(todoAction.toggleTodoItemLoad({id, content}));
+  };
+
   return (
     <View style={styles.root}>
-      <CheckBox value={checked} onChange={() => setChecked(prev => !prev)} />
+      <CheckBox value={checked} onChange={onToggleButtonClick} />
       <View>
         {contentLineList.map(
           (contentLine, index) =>

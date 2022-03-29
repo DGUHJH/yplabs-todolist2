@@ -108,3 +108,41 @@ export function* watchUpdateTodoList() {
   const {updateTodoItemLoad} = todoAction;
   yield takeLatest(updateTodoItemLoad, handleUpdateTodoListLoad);
 }
+
+export function* handleToggleTodoListLoad(action: any) {
+  const {
+    refreshTodoListLoad,
+    refreshTodoListFail,
+    refreshTodoListSuccess,
+    toggleTodoItemSuccess,
+    toggleTodoItemFail,
+  } = todoAction;
+  try {
+    yield call(() => {
+      const newContent =
+        action.payload.content.indexOf(' wogud') !== -1
+          ? action.payload.content.replace(' wogud', '')
+          : `${action.payload.content} wogud`;
+
+      updateTodoItem({
+        id: action.payload.id,
+        content: newContent,
+      });
+    });
+    yield put(toggleTodoItemSuccess());
+    try {
+      yield put(refreshTodoListLoad());
+      const todoList: GetTodoListResponseType = yield call(getTodoList);
+      yield put(refreshTodoListSuccess(todoList.data));
+    } catch (err) {
+      yield put(refreshTodoListFail());
+    }
+  } catch (err) {
+    yield put(toggleTodoItemFail());
+  }
+}
+
+export function* watchToggleTodoList() {
+  const {toggleTodoItemLoad} = todoAction;
+  yield takeLatest(toggleTodoItemLoad, handleToggleTodoListLoad);
+}

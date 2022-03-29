@@ -36,6 +36,7 @@ type DeleteTodoItemLoadProps = ActionPropsType<{
 
 type ToggleTodoItemLoadProps = ActionPropsType<{
   id: number;
+  content: string;
 }>;
 
 type CreateTodoItemLoadProps = ActionPropsType<{
