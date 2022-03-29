@@ -1,12 +1,12 @@
 import CheckBox from '@react-native-community/checkbox';
 import React, {useState} from 'react';
 import {Text, View} from 'react-native';
-import EditModal from '../Modal/Edit';
+import {useDispatch} from 'react-redux';
+import {todoAction} from '../../features/todo/slice';
 import styles from './styles';
 
 type Props = {
   id: number;
-  onUpdateTodoItem?: (value: string) => void;
   onDeleteButtonClick?: () => void;
   onDetailsButtonClick?: () => void;
   content?: string;
@@ -15,17 +15,23 @@ type Props = {
 const Todo: React.FC<Props> = ({
   id,
   onDeleteButtonClick,
-  onUpdateTodoItem,
   onDetailsButtonClick,
   content,
 }) => {
-  const [editMode, setEditMode] = useState<boolean>(false);
+  const dispatch = useDispatch();
   const [checked, setChecked] = useState<boolean>(false);
-
   const contentLineList = content.split('\n');
+  const onEditButtonClick = () => {
+    dispatch(
+      todoAction.toggleModal({
+        id,
+        type: 'update',
+        open: true,
+        initialValue: content,
+      }),
+    );
+  };
 
-  // modal 컴포넌트 하나로 통일, react-native-modal library 자체적인 모듈 사용
-  // modal 자체는 home 페이지에서 불러온다.
   // scrollview 안에 있는 컴포넌트 map 돌려서 사용 하지 않고 flatList 사용
 
   return (
@@ -40,7 +46,8 @@ const Todo: React.FC<Props> = ({
                 style={{
                   ...styles.text,
                   textDecorationLine: checked ? 'line-through' : 'none',
-                }}>
+                }}
+                key={`text_${index}`}>
                 {contentLine}
               </Text>
             ),
@@ -57,7 +64,7 @@ const Todo: React.FC<Props> = ({
         )}
       </View>
       <Text
-        onPress={checked ? () => {} : () => setEditMode(prev => !prev)}
+        onPress={checked ? () => {} : onEditButtonClick}
         style={{
           ...styles.text,
           textDecorationLine: checked ? 'line-through' : 'none',
@@ -72,13 +79,6 @@ const Todo: React.FC<Props> = ({
         }}>
         삭제
       </Text>
-      {editMode && (
-        <EditModal
-          initialValue={content}
-          onClose={() => setEditMode(false)}
-          onUpdateTodoItem={onUpdateTodoItem}
-        />
-      )}
     </View>
   );
 };
