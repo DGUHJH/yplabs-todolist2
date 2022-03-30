@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {FlatList, RefreshControl, ScrollView, Text} from 'react-native';
+import {FlatList, RefreshControl, ScrollView, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
 import CommonModal from '../../components/Modal';
@@ -47,7 +47,9 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
           />
         )}
       />
-      <Text onPress={onAddButtonClick}>추가</Text>
+      <View style={styles.addButtonWrapper}>
+        <Text onPress={onAddButtonClick}>추가</Text>
+      </View>
       <CommonModal />
     </SafeAreaView>
   );
