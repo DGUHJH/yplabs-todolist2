@@ -21,7 +21,9 @@ const DetailsScreen: React.FC<Props> = ({route, navigation}) => {
   const id = route.params.id;
   const todoItemData = store.todoList.filter(todo => todo.id === +id);
 
-  const contentLineList = todoItemData[0]?.content.split('\n');
+  const contentLineList = todoItemData[0]?.content
+    ?.replace(' wogud', '')
+    .split('\n');
 
   return (
     <View>
