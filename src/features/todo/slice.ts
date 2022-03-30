@@ -123,6 +123,8 @@ export const todoSlice = createSlice({
       state.isLoading = true;
     },
     updateTodoItemSuccess: state => {
+      state.modal.open = true;
+      state.modal.type = 'complete';
       state.isLoading = false;
     },
     updateTodoItemFail: state => {
