@@ -76,7 +76,7 @@ type State = {
 type Props = {
   store: {
     id?: number;
-    type?: 'create' | 'update';
+    type?: 'create' | 'update' | 'complete';
     initialValue?: string;
     open: boolean;
   };
@@ -129,21 +129,27 @@ class CommonModal extends Component<Props, State> {
       <Modal animationType="slide" transparent={true} visible={store.open}>
         <View style={styles.root}>
           <View style={styles.modalRoot}>
-            <TextInput
-              style={styles.textInput}
-              value={value}
-              onChangeText={this.setValue}
-              multiline={true}
-            />
-            {store.type === 'create' && (
-              <Text style={styles.text} onPress={this.onCreateTodoItem}>
-                추가
-              </Text>
-            )}
-            {store.type === 'update' && (
-              <Text style={styles.text} onPress={this.onUpdateTodoItem}>
-                수정
-              </Text>
+            {store.type !== 'complete' ? (
+              <>
+                <TextInput
+                  style={styles.textInput}
+                  value={value}
+                  onChangeText={this.setValue}
+                  multiline={true}
+                />
+                {store.type === 'create' && (
+                  <Text style={styles.text} onPress={this.onCreateTodoItem}>
+                    추가
+                  </Text>
+                )}
+                {store.type === 'update' && (
+                  <Text style={styles.text} onPress={this.onUpdateTodoItem}>
+                    수정
+                  </Text>
+                )}
+              </>
+            ) : (
+              <Text>완료되었습니다.</Text>
             )}
             <Text style={styles.text} onPress={this.onClose}>
               끄기

@@ -11,7 +11,7 @@ export type TodoSliceState = {
   error: boolean;
   modal: {
     id?: number;
-    type?: 'create' | 'update';
+    type?: 'create' | 'update' | 'complete';
     initialValue?: string;
     open: boolean;
   };
@@ -51,7 +51,7 @@ type UpdateTodoItemLoadProps = ActionPropsType<{
 type ToggleModalProps = {
   payload: {
     id?: number;
-    type?: 'create' | 'update';
+    type?: 'create' | 'update' | 'complete';
     initialValue?: string;
     open: boolean;
   };
@@ -78,6 +78,8 @@ export const todoSlice = createSlice({
     },
     deleteTodoItemSuccess: state => {
       state.isLoading = false;
+      state.modal.open = true;
+      state.modal.type = 'complete';
     },
     deleteTodoItemFail: state => {
       state.isLoading = false;
@@ -88,6 +90,8 @@ export const todoSlice = createSlice({
     },
     toggleTodoItemSuccess: state => {
       state.isLoading = false;
+      state.modal.open = true;
+      state.modal.type = 'complete';
     },
     toggleTodoItemFail: state => {
       state.isLoading = false;
@@ -98,6 +102,8 @@ export const todoSlice = createSlice({
     },
     createTodoItemSuccess: state => {
       state.isLoading = false;
+      state.modal.open = true;
+      state.modal.type = 'complete';
     },
     createTodoItemFail: state => {
       state.isLoading = false;
@@ -108,6 +114,8 @@ export const todoSlice = createSlice({
     },
     updateTodoItemSuccess: state => {
       state.isLoading = false;
+      state.modal.open = true;
+      state.modal.type = 'complete';
     },
     updateTodoItemFail: state => {
       state.isLoading = false;

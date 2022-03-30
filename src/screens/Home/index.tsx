@@ -10,6 +10,16 @@ import {todoAction} from '../../features/todo/slice';
 import {RootStackParamList} from '../../types/common';
 import styles from './styles';
 
+// 회고
+// nativeEvent 처리
+// 완료 modal
+
+// 후속 작업
+// flatlist 기능 보기
+// 완료 modal 처리
+// 위로 스크롤 당겼을때 refresh
+// useInput 등과 같은 custom hook을 만들어서 사용
+
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 const HomeScreen: React.FC<Props> = ({navigation}) => {
   const store = useSelector((state: RootState) => state);
@@ -28,22 +38,21 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.root}>
-      <ScrollView style={styles.todoListContainer}>
-        <FlatList
-          data={store.todoList}
-          renderItem={({item}) => (
-            <Todo
-              id={item.id}
-              content={item.content}
-              onDetailsButtonClick={() =>
-                navigation.push('Details', {id: item.id})
-              }
-              key={`todo_item_${item.id}`}
-            />
-          )}
-        />
-        <Text onPress={onAddButtonClick}>추가</Text>
-      </ScrollView>
+      <FlatList
+        style={styles.todoListContainer}
+        data={store.todoList}
+        renderItem={({item}) => (
+          <Todo
+            id={item.id}
+            content={item.content}
+            onDetailsButtonClick={() =>
+              navigation.push('Details', {id: item.id})
+            }
+            key={`todo_item_${item.id}`}
+          />
+        )}
+      />
+      <Text onPress={onAddButtonClick}>추가</Text>
       <CommonModal />
     </SafeAreaView>
   );

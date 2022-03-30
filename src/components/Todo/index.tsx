@@ -54,6 +54,7 @@ const Todo: React.FC<Props> = ({id, onDetailsButtonClick, content}) => {
               </Text>
             ),
         )}
+        {/* after fix */}
         {contentLineList.length > 5 && (
           <Text
             onPress={onDetailsButtonClick}
