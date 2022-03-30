@@ -11,7 +11,7 @@ export type TodoSliceState = {
   error: boolean;
   modal: {
     id?: number;
-    type?: 'create' | 'update';
+    type?: 'create' | 'update' | 'complete' | 'error';
     initialValue?: string;
     open: boolean;
   };
@@ -51,7 +51,7 @@ type UpdateTodoItemLoadProps = ActionPropsType<{
 type ToggleModalProps = {
   payload: {
     id?: number;
-    type?: 'create' | 'update';
+    type?: 'create' | 'update' | 'complete' | 'error';
     initialValue?: string;
     open: boolean;
   };
@@ -65,10 +65,14 @@ export const todoSlice = createSlice({
       state.isLoading = true;
     },
     refreshTodoListSuccess: (state, action) => {
+      state.modal.open = true;
+      state.modal.type = 'complete';
       state.isLoading = false;
       state.todoList = action.payload;
     },
     refreshTodoListFail: state => {
+      state.modal.open = true;
+      state.modal.type = 'error';
       state.isLoading = false;
       state.todoList = [];
       state.error = true;
@@ -77,9 +81,13 @@ export const todoSlice = createSlice({
       state.isLoading = true;
     },
     deleteTodoItemSuccess: state => {
+      state.modal.open = true;
+      state.modal.type = 'complete';
       state.isLoading = false;
     },
     deleteTodoItemFail: state => {
+      state.modal.open = true;
+      state.modal.type = 'error';
       state.isLoading = false;
       state.error = true;
     },
@@ -87,9 +95,13 @@ export const todoSlice = createSlice({
       state.isLoading = true;
     },
     toggleTodoItemSuccess: state => {
+      state.modal.open = true;
+      state.modal.type = 'complete';
       state.isLoading = false;
     },
     toggleTodoItemFail: state => {
+      state.modal.open = true;
+      state.modal.type = 'error';
       state.isLoading = false;
       state.error = true;
     },
@@ -97,9 +109,13 @@ export const todoSlice = createSlice({
       state.isLoading = true;
     },
     createTodoItemSuccess: state => {
+      state.modal.open = true;
+      state.modal.type = 'complete';
       state.isLoading = false;
     },
     createTodoItemFail: state => {
+      state.modal.open = true;
+      state.modal.type = 'error';
       state.isLoading = false;
       state.error = true;
     },
@@ -110,6 +126,8 @@ export const todoSlice = createSlice({
       state.isLoading = false;
     },
     updateTodoItemFail: state => {
+      state.modal.open = true;
+      state.modal.type = 'error';
       state.isLoading = false;
       state.error = true;
     },
