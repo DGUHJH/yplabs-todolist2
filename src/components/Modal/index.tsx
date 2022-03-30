@@ -3,7 +3,11 @@ import {View, Modal, TextInput, Text} from 'react-native';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {RootState} from '../../features';
-import {todoAction} from '../../features/todo/slice';
+import {
+  createTodoItemLoad,
+  toggleModal,
+  updateTodoItemLoad,
+} from '../../features/todo/slice';
 import styles from './styles';
 
 // const CommonModal = () => {
@@ -12,17 +16,17 @@ import styles from './styles';
 //   const dispatch = useDispatch();
 
 //   const onCreateTodoItem = () => {
-//     dispatch(todoAction.createTodoItemLoad({content: value}));
+//     dispatch(createTodoItemLoad({content: value}));
 //     onClose();
 //   };
 
 //   const onUpdateTodoItem = () => {
-//     dispatch(todoAction.updateTodoItemLoad({id: store.id, content: value}));
+//     dispatch(updateTodoItemLoad({id: store.id, content: value}));
 //     onClose();
 //   };
 
 //   const onClose = () => {
-//     dispatch(todoAction.toggleModal({open: false}));
+//     dispatch(toggleModal({open: false}));
 //   };
 
 //   useEffect(() => {
@@ -80,7 +84,9 @@ type Props = {
     initialValue?: string;
     open: boolean;
   };
-  todoAction: typeof todoAction;
+  createTodoItemLoad: typeof createTodoItemLoad;
+  updateTodoItemLoad: typeof updateTodoItemLoad;
+  toggleModal: typeof toggleModal;
 };
 
 class CommonModal extends Component<Props, State> {
@@ -107,12 +113,12 @@ class CommonModal extends Component<Props, State> {
   };
 
   onCreateTodoItem = () => {
-    this.props.todoAction.createTodoItemLoad({content: this.state.value});
+    this.props.createTodoItemLoad({content: this.state.value});
     this.onClose();
   };
 
   onUpdateTodoItem = () => {
-    this.props.todoAction.updateTodoItemLoad({
+    this.props.updateTodoItemLoad({
       id: this.props.store.id,
       content: this.state.value,
     });
@@ -120,7 +126,7 @@ class CommonModal extends Component<Props, State> {
   };
 
   onClose = () => {
-    this.props.todoAction.toggleModal({open: false});
+    this.props.toggleModal({open: false});
   };
 
   render() {
@@ -171,6 +177,8 @@ export default connect(
     store: modal,
   }),
   dispatch => ({
-    todoAction: bindActionCreators(todoAction, dispatch),
+    createTodoItemLoad: bindActionCreators(createTodoItemLoad, dispatch),
+    updateTodoItemLoad: bindActionCreators(updateTodoItemLoad, dispatch),
+    toggleModal: bindActionCreators(toggleModal, dispatch),
   }),
 )(CommonModal);

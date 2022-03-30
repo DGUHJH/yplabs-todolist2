@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import {Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../features';
-import {todoAction} from '../../features/todo/slice';
+import {refreshTodoListLoad} from '../../features/todo/slice';
 import {RootStackParamList} from '../../types/common';
 type Props = NativeStackScreenProps<RootStackParamList, 'Details'>;
 const DetailsScreen: React.FC<Props> = ({route, navigation}) => {
@@ -15,7 +15,7 @@ const DetailsScreen: React.FC<Props> = ({route, navigation}) => {
   }, []);
 
   const refreshTodoList = () => {
-    dispatch(todoAction.refreshTodoListLoad());
+    dispatch(refreshTodoListLoad());
   };
 
   const id = route.params.id;

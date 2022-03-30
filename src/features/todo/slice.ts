@@ -122,6 +122,23 @@ export const todoSlice = createSlice({
   },
   extraReducers: {},
 });
-export const todoAction = todoSlice.actions;
+export const {
+  refreshTodoListLoad,
+  refreshTodoListSuccess,
+  refreshTodoListFail,
+  createTodoItemLoad,
+  createTodoItemSuccess,
+  createTodoItemFail,
+  deleteTodoItemLoad,
+  deleteTodoItemSuccess,
+  deleteTodoItemFail,
+  toggleTodoItemSuccess,
+  toggleTodoItemLoad,
+  toggleTodoItemFail,
+  updateTodoItemSuccess,
+  updateTodoItemLoad,
+  updateTodoItemFail,
+  toggleModal,
+} = todoSlice.actions;
 
 export default todoSlice.reducer;

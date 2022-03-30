@@ -1,8 +1,12 @@
 import CheckBox from '@react-native-community/checkbox';
 import React, {useState} from 'react';
-import {Text, View} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {todoAction} from '../../features/todo/slice';
+import {
+  deleteTodoItemLoad,
+  toggleModal,
+  toggleTodoItemLoad,
+} from '../../features/todo/slice';
 import styles from './styles';
 
 type Props = {
@@ -19,7 +23,7 @@ const Todo: React.FC<Props> = ({id, onDetailsButtonClick, content}) => {
   const contentLineList = filterContent.split('\n');
   const onEditButtonClick = () => {
     dispatch(
-      todoAction.toggleModal({
+      toggleModal({
         id,
         type: 'update',
         open: true,
@@ -29,19 +33,20 @@ const Todo: React.FC<Props> = ({id, onDetailsButtonClick, content}) => {
   };
 
   const onDeleteButtonClick = () => {
-    dispatch(todoAction.deleteTodoItemLoad({id}));
+    dispatch(deleteTodoItemLoad({id}));
   };
 
   const onToggleButtonClick = () => {
-    dispatch(todoAction.toggleTodoItemLoad({id, content}));
+    dispatch(toggleTodoItemLoad({id, content}));
   };
 
   return (
     <View style={styles.root}>
       <CheckBox value={checked} onChange={onToggleButtonClick} />
       <View>
-        {contentLineList.map(
-          (contentLine, index) =>
+        <FlatList
+          data={contentLineList}
+          renderItem={({item, index}) =>
             index < 5 && (
               <Text
                 onPress={onDetailsButtonClick}
@@ -50,10 +55,11 @@ const Todo: React.FC<Props> = ({id, onDetailsButtonClick, content}) => {
                   textDecorationLine: checked ? 'line-through' : 'none',
                 }}
                 key={`text_${index}`}>
-                {contentLine}
+                {item}
               </Text>
-            ),
-        )}
+            )
+          }
+        />
         {contentLineList.length > 5 && (
           <Text
             onPress={onDetailsButtonClick}

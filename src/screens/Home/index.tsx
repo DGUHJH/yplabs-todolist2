@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import CommonModal from '../../components/Modal';
 import Todo from '../../components/Todo';
 import {RootState} from '../../features';
-import {todoAction} from '../../features/todo/slice';
+import {refreshTodoListLoad, toggleModal} from '../../features/todo/slice';
 import {RootStackParamList} from '../../types/common';
 import styles from './styles';
 
@@ -20,30 +20,29 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   }, []);
 
   const refreshTodoList = () => {
-    dispatch(todoAction.refreshTodoListLoad());
+    dispatch(refreshTodoListLoad());
   };
   const onAddButtonClick = () => {
-    dispatch(todoAction.toggleModal({type: 'create', open: true}));
+    dispatch(toggleModal({type: 'create', open: true}));
   };
 
   return (
     <SafeAreaView style={styles.root}>
-      <ScrollView style={styles.todoListContainer}>
-        <FlatList
-          data={store.todoList}
-          renderItem={({item}) => (
-            <Todo
-              id={item.id}
-              content={item.content}
-              onDetailsButtonClick={() =>
-                navigation.push('Details', {id: item.id})
-              }
-              key={`todo_item_${item.id}`}
-            />
-          )}
-        />
-        <Text onPress={onAddButtonClick}>추가</Text>
-      </ScrollView>
+      <FlatList
+        style={styles.todoListContainer}
+        data={store.todoList}
+        renderItem={({item}) => (
+          <Todo
+            id={item.id}
+            content={item.content}
+            onDetailsButtonClick={() =>
+              navigation.push('Details', {id: item.id})
+            }
+            key={`todo_item_${item.id}`}
+          />
+        )}
+      />
+      <Text onPress={onAddButtonClick}>추가</Text>
       <CommonModal />
     </SafeAreaView>
   );
