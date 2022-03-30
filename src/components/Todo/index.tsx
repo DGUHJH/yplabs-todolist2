@@ -7,7 +7,10 @@ import {
   toggleModal,
   toggleTodoItemLoad,
 } from '../../features/todo/slice';
+import CommonImage from '../Image';
 import styles from './styles';
+import close from '../../assets/images/close.png';
+import edit from '../../assets/images/edit.png';
 
 type Props = {
   id: number;
@@ -42,7 +45,11 @@ const Todo: React.FC<Props> = ({id, onDetailsButtonClick, content}) => {
 
   return (
     <View style={styles.root}>
-      <CheckBox value={checked} onChange={onToggleButtonClick} />
+      <CheckBox
+        style={{...styles.checkbox}}
+        value={checked}
+        onChange={onToggleButtonClick}
+      />
       <View>
         <FlatList
           data={contentLineList}
@@ -71,22 +78,26 @@ const Todo: React.FC<Props> = ({id, onDetailsButtonClick, content}) => {
           </Text>
         )}
       </View>
-      <Text
+      <CommonImage
+        source={edit}
+        size={20}
         onPress={checked ? () => {} : onEditButtonClick}
         style={{
           ...styles.text,
           textDecorationLine: checked ? 'line-through' : 'none',
-        }}>
-        수정
-      </Text>
-      <Text
+        }}
+        marginTop={5}
+      />
+      <CommonImage
+        source={close}
+        size={20}
         onPress={checked ? () => {} : onDeleteButtonClick}
         style={{
           ...styles.text,
           textDecorationLine: checked ? 'line-through' : 'none',
-        }}>
-        삭제
-      </Text>
+        }}
+        marginTop={5}
+      />
     </View>
   );
 };
