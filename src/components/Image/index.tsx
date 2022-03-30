@@ -6,6 +6,8 @@ import {Image, ImageSourcePropType} from 'react-native';
 type Props = {
   source: ImageSourcePropType;
   size: number;
+  onPress: () => void;
+  style?: any;
 } & MarginType;
 
 const CommonImage: React.FC<Props> = props => (
@@ -14,10 +16,10 @@ const CommonImage: React.FC<Props> = props => (
     style={{
       width: props.size,
       height: props.size,
-      marginTop: props.marginTop,
-      marginBottom: props.marginBottom,
-      marginLeft: props.marginLeft,
-      marginRight: props.marginRight,
+      marginTop: props.marginTop ?? 0,
+      marginBottom: props.marginBottom ?? 0,
+      marginLeft: props.marginLeft ?? 0,
+      marginRight: props.marginRight ?? 0,
     }}
   />
 );
