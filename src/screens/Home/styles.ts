@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
   root: {
     width: '100%',
     flex: 1,
+    backgroundColor: '#fff',
   },
   todoListContainer: {
     width: '100%',
