@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
-import {View, Modal, TextInput, Text} from 'react-native';
+import {View, Modal, TextInput, Text, TouchableOpacity} from 'react-native';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../features';
 import {
@@ -9,6 +9,9 @@ import {
 } from '../../features/todo/slice';
 import useInput from '../../hooks/useInput';
 import styles from './styles';
+import close from '../../assets/images/close.png';
+import edit from '../../assets/images/edit.png';
+import CommonImage from '../Image';
 
 const CommonModal = () => {
   const store = useSelector((state: RootState) => state.modal);
@@ -36,6 +39,7 @@ const CommonModal = () => {
   return (
     <Modal animationType="slide" transparent={true} visible={store.open}>
       <View style={styles.root}>
+        <TouchableOpacity style={styles.outerRoot} onPress={onClose} />
         <View style={styles.modalRoot}>
           {store.type === 'create' || store.type === 'update' ? (
             <>
@@ -46,14 +50,22 @@ const CommonModal = () => {
                 multiline={true}
               />
               {store.type === 'create' && (
-                <Text style={styles.text} onPress={onCreateTodoItem}>
-                  추가
-                </Text>
+                <View style={styles.optionButtonWrapper}>
+                  <CommonImage
+                    source={edit}
+                    size={20}
+                    onPress={onCreateTodoItem}
+                  />
+                </View>
               )}
               {store.type === 'update' && (
-                <Text style={styles.text} onPress={onUpdateTodoItem}>
-                  수정
-                </Text>
+                <View style={styles.optionButtonWrapper}>
+                  <CommonImage
+                    source={edit}
+                    size={20}
+                    onPress={onUpdateTodoItem}
+                  />
+                </View>
               )}
             </>
           ) : (
@@ -62,9 +74,9 @@ const CommonModal = () => {
               {store.type === 'error' && '실패하였습니다.'}
             </Text>
           )}
-          <Text style={styles.text} onPress={onClose}>
-            끄기
-          </Text>
+          <View style={styles.closeButtonWrapper}>
+            <CommonImage source={close} size={20} onPress={onClose} />
+          </View>
         </View>
       </View>
     </Modal>
