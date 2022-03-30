@@ -70,6 +70,7 @@ export function* handleCreateTodoListLoad(action: any) {
       yield put(refreshTodoListFail());
     }
   } catch (err) {
+    console.log(action.payload);
     yield put(createTodoItemFail());
   }
 }

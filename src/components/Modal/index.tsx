@@ -87,12 +87,10 @@ class CommonModal extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {value: this.props.store.initialValue};
-
-    console.log(this.props);
   }
 
   componentDidMount() {}
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     if (prevProps.store.initialValue !== this.props.store.initialValue) {
       this.setState({
         value: this.props.store.initialValue,
@@ -100,9 +98,9 @@ class CommonModal extends Component<Props, State> {
     }
   }
 
-  setValue = (e: any) => {
+  setValue = (text: string) => {
     this.setState({
-      value: e.target.value,
+      value: text,
     });
   };
 
@@ -126,41 +124,31 @@ class CommonModal extends Component<Props, State> {
   render() {
     const {store} = this.props;
     const {value} = this.state;
+
     return (
       <Modal animationType="slide" transparent={true} visible={store.open}>
         <View style={styles.root}>
-          {store.type === 'create' && (
-            <View style={styles.modalRoot}>
-              <TextInput
-                style={styles.textInput}
-                value={value}
-                onChangeText={this.setValue}
-                multiline={true}
-              />
+          <View style={styles.modalRoot}>
+            <TextInput
+              style={styles.textInput}
+              value={value}
+              onChangeText={this.setValue}
+              multiline={true}
+            />
+            {store.type === 'create' && (
               <Text style={styles.text} onPress={this.onCreateTodoItem}>
                 추가
               </Text>
-              <Text style={styles.text} onPress={this.onClose}>
-                끄기
-              </Text>
-            </View>
-          )}
-          {store.type === 'update' && (
-            <View style={styles.modalRoot}>
-              <TextInput
-                style={styles.textInput}
-                value={value}
-                onChangeText={this.setValue}
-                multiline={true}
-              />
+            )}
+            {store.type === 'update' && (
               <Text style={styles.text} onPress={this.onUpdateTodoItem}>
                 수정
               </Text>
-              <Text style={styles.text} onPress={this.onClose}>
-                끄기
-              </Text>
-            </View>
-          )}
+            )}
+            <Text style={styles.text} onPress={this.onClose}>
+              끄기
+            </Text>
+          </View>
         </View>
       </Modal>
     );
