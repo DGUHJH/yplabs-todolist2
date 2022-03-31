@@ -1,4 +1,7 @@
 {
   "name": "todolist",
-  "displayName": "todolist"
+  "displayName": "todolist",
+  "packagerOpts": {
+    "config": "metro.config.js"
+  }
 }

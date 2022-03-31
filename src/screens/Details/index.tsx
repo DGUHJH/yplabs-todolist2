@@ -3,8 +3,9 @@ import React, {useEffect} from 'react';
 import {Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../features';
-import {todoAction} from '../../features/todo/slice';
+import {refreshTodoListLoad} from '../../features/todo/slice';
 import {RootStackParamList} from '../../types/common';
+import styles from './styles';
 type Props = NativeStackScreenProps<RootStackParamList, 'Details'>;
 const DetailsScreen: React.FC<Props> = ({route, navigation}) => {
   const store = useSelector((state: RootState) => state);
@@ -15,7 +16,7 @@ const DetailsScreen: React.FC<Props> = ({route, navigation}) => {
   }, []);
 
   const refreshTodoList = () => {
-    dispatch(todoAction.refreshTodoListLoad());
+    dispatch(refreshTodoListLoad());
   };
 
   const id = route.params.id;
@@ -26,9 +27,9 @@ const DetailsScreen: React.FC<Props> = ({route, navigation}) => {
     .split('\n');
 
   return (
-    <View>
-      <Text>상세</Text>
-      <View>
+    <View style={styles.root}>
+      <Text>상세 내용</Text>
+      <View style={styles.contentWrapper}>
         {todoItemData.length === 0
           ? '잘못된 접근입니다.'
           : contentLineList?.map((contentLine, index) => (

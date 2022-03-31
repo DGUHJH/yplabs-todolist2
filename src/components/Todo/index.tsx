@@ -1,9 +1,16 @@
 import CheckBox from '@react-native-community/checkbox';
 import React, {useState} from 'react';
-import {Text, View} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {todoAction} from '../../features/todo/slice';
+import {
+  deleteTodoItemLoad,
+  toggleModal,
+  toggleTodoItemLoad,
+} from '../../features/todo/slice';
+import CommonImage from '../Image';
 import styles from './styles';
+import close from '../../assets/images/close.png';
+import edit from '../../assets/images/edit.png';
 
 type Props = {
   id: number;
@@ -19,7 +26,7 @@ const Todo: React.FC<Props> = ({id, onDetailsButtonClick, content}) => {
   const contentLineList = filterContent.split('\n');
   const onEditButtonClick = () => {
     dispatch(
-      todoAction.toggleModal({
+      toggleModal({
         id,
         type: 'update',
         open: true,
@@ -29,19 +36,24 @@ const Todo: React.FC<Props> = ({id, onDetailsButtonClick, content}) => {
   };
 
   const onDeleteButtonClick = () => {
-    dispatch(todoAction.deleteTodoItemLoad({id}));
+    dispatch(deleteTodoItemLoad({id}));
   };
 
   const onToggleButtonClick = () => {
-    dispatch(todoAction.toggleTodoItemLoad({id, content}));
+    dispatch(toggleTodoItemLoad({id, content}));
   };
 
   return (
     <View style={styles.root}>
-      <CheckBox value={checked} onChange={onToggleButtonClick} />
+      <CheckBox
+        style={{...styles.checkbox}}
+        value={checked}
+        onChange={onToggleButtonClick}
+      />
       <View>
-        {contentLineList.map(
-          (contentLine, index) =>
+        <FlatList
+          data={contentLineList}
+          renderItem={({item, index}) =>
             index < 5 && (
               <Text
                 onPress={onDetailsButtonClick}
@@ -50,11 +62,11 @@ const Todo: React.FC<Props> = ({id, onDetailsButtonClick, content}) => {
                   textDecorationLine: checked ? 'line-through' : 'none',
                 }}
                 key={`text_${index}`}>
-                {contentLine}
+                {item}
               </Text>
-            ),
-        )}
-        {/* after fix */}
+            )
+          }
+        />
         {contentLineList.length > 5 && (
           <Text
             onPress={onDetailsButtonClick}
@@ -66,22 +78,26 @@ const Todo: React.FC<Props> = ({id, onDetailsButtonClick, content}) => {
           </Text>
         )}
       </View>
-      <Text
+      <CommonImage
+        source={edit}
+        size={20}
         onPress={checked ? () => {} : onEditButtonClick}
         style={{
           ...styles.text,
           textDecorationLine: checked ? 'line-through' : 'none',
-        }}>
-        수정
-      </Text>
-      <Text
+        }}
+        marginTop={5}
+      />
+      <CommonImage
+        source={close}
+        size={20}
         onPress={checked ? () => {} : onDeleteButtonClick}
         style={{
           ...styles.text,
           textDecorationLine: checked ? 'line-through' : 'none',
-        }}>
-        삭제
-      </Text>
+        }}
+        marginTop={5}
+      />
     </View>
   );
 };

@@ -11,7 +11,7 @@ export type TodoSliceState = {
   error: boolean;
   modal: {
     id?: number;
-    type?: 'create' | 'update' | 'complete';
+    type?: 'create' | 'update' | 'complete' | 'error';
     initialValue?: string;
     open: boolean;
   };
@@ -51,7 +51,7 @@ type UpdateTodoItemLoadProps = ActionPropsType<{
 type ToggleModalProps = {
   payload: {
     id?: number;
-    type?: 'create' | 'update' | 'complete';
+    type?: 'create' | 'update' | 'complete' | 'error';
     initialValue?: string;
     open: boolean;
   };
@@ -65,10 +65,14 @@ export const todoSlice = createSlice({
       state.isLoading = true;
     },
     refreshTodoListSuccess: (state, action) => {
+      state.modal.open = true;
+      state.modal.type = 'complete';
       state.isLoading = false;
       state.todoList = action.payload;
     },
     refreshTodoListFail: state => {
+      state.modal.open = true;
+      state.modal.type = 'error';
       state.isLoading = false;
       state.todoList = [];
       state.error = true;
@@ -77,11 +81,15 @@ export const todoSlice = createSlice({
       state.isLoading = true;
     },
     deleteTodoItemSuccess: state => {
+      state.modal.open = true;
+      state.modal.type = 'complete';
       state.isLoading = false;
       state.modal.open = true;
       state.modal.type = 'complete';
     },
     deleteTodoItemFail: state => {
+      state.modal.open = true;
+      state.modal.type = 'error';
       state.isLoading = false;
       state.error = true;
     },
@@ -89,11 +97,15 @@ export const todoSlice = createSlice({
       state.isLoading = true;
     },
     toggleTodoItemSuccess: state => {
+      state.modal.open = true;
+      state.modal.type = 'complete';
       state.isLoading = false;
       state.modal.open = true;
       state.modal.type = 'complete';
     },
     toggleTodoItemFail: state => {
+      state.modal.open = true;
+      state.modal.type = 'error';
       state.isLoading = false;
       state.error = true;
     },
@@ -101,11 +113,15 @@ export const todoSlice = createSlice({
       state.isLoading = true;
     },
     createTodoItemSuccess: state => {
+      state.modal.open = true;
+      state.modal.type = 'complete';
       state.isLoading = false;
       state.modal.open = true;
       state.modal.type = 'complete';
     },
     createTodoItemFail: state => {
+      state.modal.open = true;
+      state.modal.type = 'error';
       state.isLoading = false;
       state.error = true;
     },
@@ -113,11 +129,15 @@ export const todoSlice = createSlice({
       state.isLoading = true;
     },
     updateTodoItemSuccess: state => {
+      state.modal.open = true;
+      state.modal.type = 'complete';
       state.isLoading = false;
       state.modal.open = true;
       state.modal.type = 'complete';
     },
     updateTodoItemFail: state => {
+      state.modal.open = true;
+      state.modal.type = 'error';
       state.isLoading = false;
       state.error = true;
     },
@@ -130,6 +150,23 @@ export const todoSlice = createSlice({
   },
   extraReducers: {},
 });
-export const todoAction = todoSlice.actions;
+export const {
+  refreshTodoListLoad,
+  refreshTodoListSuccess,
+  refreshTodoListFail,
+  createTodoItemLoad,
+  createTodoItemSuccess,
+  createTodoItemFail,
+  deleteTodoItemLoad,
+  deleteTodoItemSuccess,
+  deleteTodoItemFail,
+  toggleTodoItemSuccess,
+  toggleTodoItemLoad,
+  toggleTodoItemFail,
+  updateTodoItemSuccess,
+  updateTodoItemLoad,
+  updateTodoItemFail,
+  toggleModal,
+} = todoSlice.actions;
 
 export default todoSlice.reducer;

@@ -1,170 +1,196 @@
 import React, {Component, useEffect, useState} from 'react';
-import {View, Modal, TextInput, Text} from 'react-native';
+import {View, Modal, TextInput, Text, TouchableOpacity} from 'react-native';
 import {connect, useDispatch, useSelector} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import {RootState} from '../../features';
-import {todoAction} from '../../features/todo/slice';
+import {
+  createTodoItemLoad,
+  toggleModal,
+  updateTodoItemLoad,
+} from '../../features/todo/slice';
+import useInput from '../../hooks/useInput';
 import styles from './styles';
+import close from '../../assets/images/close.png';
+import edit from '../../assets/images/edit.png';
+import CommonImage from '../Image';
 
-// const CommonModal = () => {
-//   const store = useSelector((state: RootState) => state.modal);
-//   const [value, setValue] = useState<string>(store.initialValue);
-//   const dispatch = useDispatch();
+const CommonModal = () => {
+  const store = useSelector((state: RootState) => state.modal);
+  const [value, onChange] = useInput(store.initialValue);
+  const dispatch = useDispatch();
 
-//   const onCreateTodoItem = () => {
-//     dispatch(todoAction.createTodoItemLoad({content: value}));
-//     onClose();
-//   };
-
-//   const onUpdateTodoItem = () => {
-//     dispatch(todoAction.updateTodoItemLoad({id: store.id, content: value}));
-//     onClose();
-//   };
-
-//   const onClose = () => {
-//     dispatch(todoAction.toggleModal({open: false}));
-//   };
-
-//   useEffect(() => {
-//     setValue(store.initialValue);
-//   }, [store.initialValue]);
-
-//   return (
-//     <Modal animationType="slide" transparent={true} visible={store.open}>
-//       <View style={styles.root}>
-//         {store.type === 'create' && (
-//           <View style={styles.modalRoot}>
-//             <TextInput
-//               style={styles.textInput}
-//               value={value}
-//               onChangeText={setValue}
-//               multiline={true}
-//             />
-//             <Text style={styles.text} onPress={onCreateTodoItem}>
-//               추가
-//             </Text>
-//             <Text style={styles.text} onPress={onClose}>
-//               끄기
-//             </Text>
-//           </View>
-//         )}
-//         {store.type === 'update' && (
-//           <View style={styles.modalRoot}>
-//             <TextInput
-//               style={styles.textInput}
-//               value={value}
-//               onChangeText={setValue}
-//               multiline={true}
-//             />
-//             <Text style={styles.text} onPress={onUpdateTodoItem}>
-//               수정
-//             </Text>
-//             <Text style={styles.text} onPress={onClose}>
-//               끄기
-//             </Text>
-//           </View>
-//         )}
-//       </View>
-//     </Modal>
-//   );
-// };
-
-type State = {
-  value: string;
-};
-
-type Props = {
-  store: {
-    id?: number;
-    type?: 'create' | 'update' | 'complete';
-    initialValue?: string;
-    open: boolean;
-  };
-  todoAction: typeof todoAction;
-};
-
-class CommonModal extends Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {value: this.props.store.initialValue};
-  }
-
-  componentDidMount() {}
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    if (prevProps.store.initialValue !== this.props.store.initialValue) {
-      this.setState({
-        value: this.props.store.initialValue,
-      });
-    }
-  }
-
-  setValue = (text: string) => {
-    this.setState({
-      value: text,
-    });
+  const onCreateTodoItem = () => {
+    dispatch(createTodoItemLoad({content: value}));
+    onClose();
   };
 
-  onCreateTodoItem = () => {
-    this.props.todoAction.createTodoItemLoad({content: this.state.value});
-    this.onClose();
+  const onUpdateTodoItem = () => {
+    dispatch(updateTodoItemLoad({id: store.id, content: value}));
+    onClose();
   };
 
-  onUpdateTodoItem = () => {
-    this.props.todoAction.updateTodoItemLoad({
-      id: this.props.store.id,
-      content: this.state.value,
-    });
-    this.onClose();
+  const onClose = () => {
+    dispatch(toggleModal({open: false}));
   };
 
-  onClose = () => {
-    this.props.todoAction.toggleModal({open: false});
-  };
+  useEffect(() => {
+    onChange(store.initialValue);
+  }, [store.initialValue]);
 
-  render() {
-    const {store} = this.props;
-    const {value} = this.state;
-
-    return (
-      <Modal animationType="slide" transparent={true} visible={store.open}>
-        <View style={styles.root}>
-          <View style={styles.modalRoot}>
-            {store.type !== 'complete' ? (
-              <>
-                <TextInput
-                  style={styles.textInput}
-                  value={value}
-                  onChangeText={this.setValue}
-                  multiline={true}
-                />
-                {store.type === 'create' && (
-                  <Text style={styles.text} onPress={this.onCreateTodoItem}>
-                    추가
-                  </Text>
-                )}
-                {store.type === 'update' && (
-                  <Text style={styles.text} onPress={this.onUpdateTodoItem}>
-                    수정
-                  </Text>
-                )}
-              </>
-            ) : (
-              <Text>완료되었습니다.</Text>
-            )}
-            <Text style={styles.text} onPress={this.onClose}>
-              끄기
+  return (
+    <Modal animationType="slide" transparent={true} visible={store.open}>
+      <View style={styles.root}>
+        <TouchableOpacity style={styles.outerRoot} onPress={onClose} />
+        <View style={styles.modalRoot}>
+          {store.type === 'create' || store.type === 'update' ? (
+            <>
+              <TextInput
+                style={styles.textInput}
+                value={value}
+                onChangeText={onChange}
+                multiline={true}
+              />
+              {store.type === 'create' && (
+                <View style={styles.optionButtonWrapper}>
+                  <CommonImage
+                    source={edit}
+                    size={20}
+                    onPress={onCreateTodoItem}
+                  />
+                </View>
+              )}
+              {store.type === 'update' && (
+                <View style={styles.optionButtonWrapper}>
+                  <CommonImage
+                    source={edit}
+                    size={20}
+                    onPress={onUpdateTodoItem}
+                  />
+                </View>
+              )}
+            </>
+          ) : (
+            <Text>
+              {store.type === 'complete' && '성공하였습니다.'}
+              {store.type === 'error' && '실패하였습니다.'}
             </Text>
+          )}
+          <View style={styles.closeButtonWrapper}>
+            <CommonImage source={close} size={20} onPress={onClose} />
           </View>
         </View>
-      </Modal>
-    );
-  }
-}
-export default connect(
-  ({modal}: RootState) => ({
-    store: modal,
-  }),
-  dispatch => ({
-    todoAction: bindActionCreators(todoAction, dispatch),
-  }),
-)(CommonModal);
+      </View>
+    </Modal>
+  );
+};
+
+export default CommonModal;
+
+// type State = {
+//   value: string;
+// };
+
+// type Props = {
+//   store: {
+//     id?: number;
+//     type?: 'create' | 'update';
+//     initialValue?: string;
+//     open: boolean;
+//   };
+//   createTodoItemLoad: typeof createTodoItemLoad;
+//   updateTodoItemLoad: typeof updateTodoItemLoad;
+//   toggleModal: typeof toggleModal;
+// };
+
+// class CommonModal extends Component<Props, State> {
+//   constructor(props) {
+//     super(props);
+//     this.state = {value: this.props.store.initialValue};
+
+//     console.log(this.props);
+//   }
+
+//   componentDidMount() {}
+//   componentDidUpdate(prevProps: Props) {
+//     if (prevProps.store.initialValue !== this.props.store.initialValue) {
+//       this.setState({
+//         value: this.props.store.initialValue,
+//       });
+//     }
+//   }
+
+//   setValue = (text: string) => {
+//     this.setState({
+//       value: text,
+//     });
+//   };
+
+//   onCreateTodoItem = () => {
+//     this.props.createTodoItemLoad({content: this.state.value});
+//     this.onClose();
+//   };
+
+//   onUpdateTodoItem = () => {
+//     this.props.updateTodoItemLoad({
+//       id: this.props.store.id,
+//       content: this.state.value,
+//     });
+//     this.onClose();
+//   };
+
+//   onClose = () => {
+//     this.props.toggleModal({open: false});
+//   };
+
+//   render() {
+//     const {store} = this.props;
+//     const {value} = this.state;
+//     return (
+//       <Modal animationType="slide" transparent={true} visible={store.open}>
+//         <View style={styles.root}>
+//           {store.type === 'create' && (
+//             <View style={styles.modalRoot}>
+//               <TextInput
+//                 style={styles.textInput}
+//                 value={value}
+//                 onChangeText={this.setValue}
+//                 multiline={true}
+//               />
+//               <Text style={styles.text} onPress={this.onCreateTodoItem}>
+//                 추가
+//               </Text>
+//               <Text style={styles.text} onPress={this.onClose}>
+//                 끄기
+//               </Text>
+//             </View>
+//           )}
+//           {store.type === 'update' && (
+//             <View style={styles.modalRoot}>
+//               <TextInput
+//                 style={styles.textInput}
+//                 value={value}
+//                 onChangeText={this.setValue}
+//                 multiline={true}
+//               />
+//               <Text style={styles.text} onPress={this.onUpdateTodoItem}>
+//                 수정
+//               </Text>
+//               <Text style={styles.text} onPress={this.onClose}>
+//                 끄기
+//               </Text>
+//             </View>
+//           )}
+//         </View>
+//       </Modal>
+//     );
+//   }
+// }
+// export default connect(
+//   ({modal}: RootState) => ({
+//     store: modal,
+//   }),
+//   dispatch => ({
+//     createTodoItemLoad: bindActionCreators(createTodoItemLoad, dispatch),
+//     updateTodoItemLoad: bindActionCreators(updateTodoItemLoad, dispatch),
+//     toggleModal: bindActionCreators(toggleModal, dispatch),
+//   }),
+// )(CommonModal);
