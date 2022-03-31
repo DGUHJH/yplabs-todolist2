@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import CommonModal from './src/components/Modal';
 import createStore from './src/features';
 import DetailsScreen from './src/screens/Details';
+import FeedScreen from './src/screens/Feed';
 import HomeScreen from './src/screens/Home';
 
 const Stack = createNativeStackNavigator();
@@ -15,9 +16,10 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Navigator initialRouteName="Feed">
+          {/* <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Details" component={DetailsScreen} /> */}
+          <Stack.Screen name="Feed" component={FeedScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
