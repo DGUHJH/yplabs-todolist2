@@ -4,7 +4,7 @@ import colors from '../../styles/colors';
 import {MarginType} from '../../types/common';
 
 type Props = {
-  color: string;
+  color?: string;
   fontSize: number;
   fontWeight:
     | 'normal'
@@ -21,7 +21,7 @@ type Props = {
 } & MarginType;
 
 const Typography: React.FC<Props> = ({
-  color,
+  color = '#000',
   fontSize,
   fontWeight,
   marginTop,
