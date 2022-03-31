@@ -2,6 +2,7 @@ import {Text, View} from 'react-native';
 import Styles from './styles';
 import colors from '../../styles/colors';
 import {MarginType} from '../../types/common';
+import React from 'react';
 
 type Props = {
   color?: string;
