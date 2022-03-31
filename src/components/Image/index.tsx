@@ -5,8 +5,9 @@ import {Image, ImageSourcePropType, TouchableOpacity} from 'react-native';
 
 type Props = {
   source: ImageSourcePropType;
-  size: number;
-  onPress: () => void;
+  width: number | string;
+  height: number | string;
+  onPress?: () => void;
   style?: any;
 } & MarginType;
 
@@ -15,8 +16,8 @@ const CommonImage: React.FC<Props> = props => (
     <Image
       {...props}
       style={{
-        width: props.size,
-        height: props.size,
+        width: props.width,
+        height: props.height,
         marginTop: props.marginTop ?? 0,
         marginBottom: props.marginBottom ?? 0,
         marginLeft: props.marginLeft ?? 0,
