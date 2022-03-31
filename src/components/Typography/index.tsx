@@ -32,20 +32,18 @@ const Typography: React.FC<Props> = ({
   children,
 }) => {
   return (
-    <View style={Styles.root}>
-      <Text
-        style={{
-          color,
-          fontSize,
-          fontWeight,
-          marginTop,
-          marginBottom,
-          marginLeft,
-          marginRight,
-        }}>
-        {children}
-      </Text>
-    </View>
+    <Text
+      style={{
+        color,
+        fontSize,
+        fontWeight,
+        marginTop,
+        marginBottom,
+        marginLeft,
+        marginRight,
+      }}>
+      {children}
+    </Text>
   );
 };
 
