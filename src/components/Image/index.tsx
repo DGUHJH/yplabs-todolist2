@@ -17,6 +17,10 @@ const CommonImage: React.FC<Props> = props => (
     style={{
       width: props.width,
       height: props.height,
+      marginTop: props.marginTop ?? 0,
+      marginBottom: props.marginBottom ?? 0,
+      marginLeft: props.marginLeft ?? 0,
+      marginRight: props.marginRight ?? 0,
     }}>
     <Image
       {...props}
