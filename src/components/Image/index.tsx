@@ -12,7 +12,12 @@ type Props = {
 } & MarginType;
 
 const CommonImage: React.FC<Props> = props => (
-  <TouchableOpacity onPress={props.onPress}>
+  <TouchableOpacity
+    onPress={props.onPress}
+    style={{
+      width: props.width,
+      height: props.height,
+    }}>
     <Image
       {...props}
       style={{
