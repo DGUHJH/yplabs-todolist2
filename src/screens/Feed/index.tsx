@@ -1,6 +1,13 @@
 import styles from './styles';
 import React, {useCallback, useState} from 'react';
-import {Animated, FlatList, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  Animated,
+  FlatList,
+  Text,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import Typography from '../../components/Typography';
 import colors from '../../styles/colors';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -77,9 +84,36 @@ const FeedScreen = () => {
     </View>
   );
 
-  const [titleTranslateYValue, setTitleTranslateYValue] = useState<number>(0);
+  const carousel = () => (
+    <Animated.View
+      style={{
+        ...styles.carouselItemContainer,
+        transform: [{translateX: carouselRotate}],
+      }}>
+      {carouselList.map((carouselItem, index) => (
+        <View style={styles.carouselItemWrapper} key={`carousel_item_${index}`}>
+          <CommonImage
+            source={carouselItem.source}
+            width={deviceWidth}
+            height={54}
+          />
+          <View style={styles.carouselItemTypoWrapper}>
+            <Typography fontSize={14} fontWeight="700" color={colors.black}>
+              {carouselItem.label}
+            </Typography>
+          </View>
+        </View>
+      ))}
+    </Animated.View>
+  );
 
-  titleTranslateY.addListener(({value}) => setTitleTranslateYValue(value));
+  const listHeader = () => (
+    <>
+      {header()}
+      {tabBar()}
+      {carousel()}
+    </>
+  );
 
   return (
     <SafeAreaView
@@ -90,42 +124,17 @@ const FeedScreen = () => {
       <Animated.FlatList
         contentContainerStyle={styles.feedListContainer}
         scrollEventThrottle={16}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
-          {
-            useNativeDriver: true,
-          },
-        )}
+        // onScroll={Animated.event(
+        //   [{nativeEvent: {contentOffset: {y: scrollY}}}],
+        //   {
+        //     useNativeDriver: true,
+        //   },
+        // )}
         onScrollEndDrag={onEndReached}
-        ListHeaderComponent={
-          <Animated.View
-            style={{
-              ...styles.carouselItemContainer,
-              transform: [{translateX: carouselRotate}],
-            }}>
-            {carouselList.map((carouselItem, index) => (
-              <View
-                style={styles.carouselItemWrapper}
-                key={`carousel_item_${index}`}>
-                <CommonImage
-                  source={carouselItem.source}
-                  width={deviceWidth}
-                  height={54}
-                />
-                <View style={styles.carouselItemTypoWrapper}>
-                  <Typography
-                    fontSize={14}
-                    fontWeight="700"
-                    color={colors.black}>
-                    {carouselItem.label}
-                  </Typography>
-                </View>
-              </View>
-            ))}
-          </Animated.View>
-        }
+        ListHeaderComponent={listHeader()}
+        stickyHeaderHiddenOnScroll={true}
         data={feedData}
-        renderItem={({item, index}) =>
+        renderItem={({item, index, separators}) =>
           index < 18 + scroll * 2 && (
             <FeedCard
               {...item}
@@ -135,8 +144,9 @@ const FeedScreen = () => {
           )
         }
         onEndReached={onEndReached}
+        stickyHeaderIndices={[0, 0]}
       />
-      <Animated.View
+      {/* <Animated.View
         style={[
           {
             ...styles.headerAnimationContainer,
@@ -146,11 +156,12 @@ const FeedScreen = () => {
         ]}>
         {header()}
         {tabBar()}
-      </Animated.View>
+      </Animated.View> */}
     </SafeAreaView>
   );
 };
 
-// tabBar 같은 경우에는 flatList로 처리하는지 보통
+// flatlist 헤더에 요소 3개를 넣고 그 중 가운데껏만 stickyHeader로 만들고 싶은데 어떻게하나요 보통??
+// 커뮤니티에 질문 드렸을 땐 flatList를 하나 더 만들라고 하시는데 이게 맞는 방법인지 궁금합니다.
 
 export default FeedScreen;

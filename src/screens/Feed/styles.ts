@@ -11,10 +11,10 @@ const styles = StyleSheet.create({
   headerAnimationContainer: {
     width: '100%',
     backgroundColor: '#fff',
-    position: 'absolute',
-    top: 0,
-    overflow: 'hidden',
-    zIndex: 1,
+    // position: 'absolute',
+    // top: 0,
+    // overflow: 'hidden',
+    // zIndex: 1,
   },
   header: {
     width: '100%',
@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 20,
     paddingRight: 20,
-    position: 'absolute',
-    bottom: 50,
+    // position: 'absolute',
+    // bottom: 50,
   },
   tabBarContainer: {
     width: '100%',
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    position: 'absolute',
-    bottom: 0,
+    // position: 'absolute',
+    // bottom: 0,
   },
   tabBarItemWrapper: {
     height: 50,
@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
     left: 20,
   },
   feedListContainer: {
-    paddingTop: 98,
     zIndex: 2,
   },
 });
