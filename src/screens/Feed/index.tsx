@@ -1,6 +1,6 @@
 import styles from './styles';
 import React, {useCallback, useState} from 'react';
-import {Animated, TouchableWithoutFeedback, View} from 'react-native';
+import {Animated, FlatList, TouchableWithoutFeedback, View} from 'react-native';
 import Typography from '../../components/Typography';
 import colors from '../../styles/colors';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -87,7 +87,7 @@ const FeedScreen = () => {
       style={{
         ...styles.root,
       }}>
-      <Animated.ScrollView
+      <Animated.FlatList
         contentContainerStyle={styles.feedListContainer}
         scrollEventThrottle={16}
         onScroll={Animated.event(
@@ -96,53 +96,46 @@ const FeedScreen = () => {
             useNativeDriver: true,
           },
         )}
-        onScrollEndDrag={onEndReached}>
-        <Animated.View
-          style={{
-            ...styles.carouselItemContainer,
-            transform: [{translateX: carouselRotate}],
-          }}>
-          {carouselList.map((carouselItem, index) => (
-            <View
-              style={styles.carouselItemWrapper}
-              key={`carousel_item_${index}`}>
-              <CommonImage
-                source={carouselItem.source}
-                width={deviceWidth}
-                height={54}
-              />
-              <View style={styles.carouselItemTypoWrapper}>
-                <Typography fontSize={14} fontWeight="700" color={colors.black}>
-                  {carouselItem.label}
-                </Typography>
+        onScrollEndDrag={onEndReached}
+        ListHeaderComponent={
+          <Animated.View
+            style={{
+              ...styles.carouselItemContainer,
+              transform: [{translateX: carouselRotate}],
+            }}>
+            {carouselList.map((carouselItem, index) => (
+              <View
+                style={styles.carouselItemWrapper}
+                key={`carousel_item_${index}`}>
+                <CommonImage
+                  source={carouselItem.source}
+                  width={deviceWidth}
+                  height={54}
+                />
+                <View style={styles.carouselItemTypoWrapper}>
+                  <Typography
+                    fontSize={14}
+                    fontWeight="700"
+                    color={colors.black}>
+                    {carouselItem.label}
+                  </Typography>
+                </View>
               </View>
-            </View>
-          ))}
-        </Animated.View>
-        {/* <FlatList
-          data={feedData}
-          renderItem={({item, index}) =>
-            index < 18 + scroll * 2 && (
-              <FeedCard
-                {...item}
-                title={`${item.title} ${index}`}
-                key={`feed_card_${index}`}
-              />
-            )
-          }
-          onEndReached={onEndReached}
-        /> */}
-        {feedData.map(
-          (item, index) =>
-            index < 5 + scroll * 2 && (
-              <FeedCard
-                {...item}
-                title={`${item.title} ${index}`}
-                key={`feed_card_${index}`}
-              />
-            ),
-        )}
-      </Animated.ScrollView>
+            ))}
+          </Animated.View>
+        }
+        data={feedData}
+        renderItem={({item, index}) =>
+          index < 18 + scroll * 2 && (
+            <FeedCard
+              {...item}
+              title={`${item.title} ${index}`}
+              key={`feed_card_${index}`}
+            />
+          )
+        }
+        onEndReached={onEndReached}
+      />
       <Animated.View
         style={[
           {
